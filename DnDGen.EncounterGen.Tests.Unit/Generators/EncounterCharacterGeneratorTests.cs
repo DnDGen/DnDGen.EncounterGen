@@ -1,9 +1,11 @@
-﻿using DnDGen.CharacterGen.Characters;
-using DnDGen.CharacterGen.Generators.Characters;
-using DnDGen.CharacterGen.Randomizers.Abilities;
-using DnDGen.CharacterGen.Randomizers.Alignments;
-using DnDGen.CharacterGen.Randomizers.CharacterClasses;
-using DnDGen.CharacterGen.Randomizers.Races;
+﻿using DnDGen.CharacterGen.Abilities.Randomizers;
+using DnDGen.CharacterGen.Alignments.Randomizers;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.ClassNames;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.Levels;
+using DnDGen.CharacterGen.Characters;
+using DnDGen.CharacterGen.Races.Randomizers;
+using DnDGen.CharacterGen.Races.Randomizers.BaseRaces;
+using DnDGen.CharacterGen.Races.Randomizers.Metaraces;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.EncounterGen.Models;
 using DnDGen.EncounterGen.Selectors;
@@ -58,11 +60,14 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             mockSetBaseRaceRandomizer = new Mock<ISetBaseRaceRandomizer>();
             mockJustInTimeFactory = new Mock<JustInTimeFactory>();
 
-            encounterCharacterGenerator = new EncounterCharacterGenerator(mockCollectionSelector.Object, mockDice.Object, mockEncounterFormatter.Object, mockJustInTimeFactory.Object, mockCharacterGenerator.Object);
+            encounterCharacterGenerator = new EncounterCharacterGenerator(
+                mockCollectionSelector.Object,
+                mockDice.Object,
+                mockEncounterFormatter.Object,
+                mockJustInTimeFactory.Object,
+                mockCharacterGenerator.Object);
 
-            creatures = new List<EncounterCreature>();
-
-            creatures.Add(new EncounterCreature());
+            creatures = [new EncounterCreature()];
             creatures[0].Quantity = 10;
             creatures[0].Creature.Name = "creature";
             creatures[0].Creature.Description = "description";
@@ -79,24 +84,23 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[0].Creature.Name)).Returns(CreatureDataConstants.Character);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[0].Creature.Name)).Returns("1337");
 
-            mockJustInTimeFactory.Setup(f => f.Build<IAlignmentRandomizer>(AlignmentRandomizerTypeConstants.Any)).Returns(mockAnyAlignmentRandomizer.Object);
-            mockJustInTimeFactory.Setup(f => f.Build<IClassNameRandomizer>(ClassNameRandomizerTypeConstants.AnyPlayer)).Returns(mockAnyPlayerClassNameRandomizer.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<IAlignmentRandomizer>(AlignmentRandomizerTypeConstants.Default)).Returns(mockAnyAlignmentRandomizer.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<IClassNameRandomizer>(ClassNameRandomizerTypeConstants.Default)).Returns(mockAnyPlayerClassNameRandomizer.Object);
             mockJustInTimeFactory.Setup(f => f.Build<IClassNameRandomizer>(ClassNameRandomizerTypeConstants.AnyNPC)).Returns(mockAnyNPCClassNameRandomizer.Object);
             mockJustInTimeFactory.Setup(f => f.Build<ISetClassNameRandomizer>()).Returns(mockSetClassNameRandomizer.Object);
             mockJustInTimeFactory.Setup(f => f.Build<ISetLevelRandomizer>()).Returns(mockSetLevelRandomizer.Object);
-            mockJustInTimeFactory.Setup(f => f.Build<RaceRandomizer>(RaceRandomizerTypeConstants.BaseRace.AnyBase)).Returns(mockAnyBaseRaceRandomizer.Object);
-            mockJustInTimeFactory.Setup(f => f.Build<RaceRandomizer>(RaceRandomizerTypeConstants.Metarace.AnyMeta)).Returns(mockAnyMetaraceRandomizer.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<RaceRandomizer>(RaceRandomizerTypeConstants.BaseRace.Default)).Returns(mockAnyBaseRaceRandomizer.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<RaceRandomizer>(RaceRandomizerTypeConstants.Metarace.Default)).Returns(mockAnyMetaraceRandomizer.Object);
             mockJustInTimeFactory.Setup(f => f.Build<ISetBaseRaceRandomizer>()).Returns(mockSetBaseRaceRandomizer.Object);
             mockJustInTimeFactory.Setup(f => f.Build<ISetMetaraceRandomizer>()).Returns(mockSetMetaraceRandomizer.Object);
-            mockJustInTimeFactory.Setup(f => f.Build<IAbilitiesRandomizer>(AbilitiesRandomizerTypeConstants.Raw)).Returns(mockRawAbilitiesRandomizer.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<IAbilitiesRandomizer>(AbilitiesRandomizerTypeConstants.Default)).Returns(mockRawAbilitiesRandomizer.Object);
         }
 
-        private PartialRoll ParseRoll(string roll)
+        private static PartialRoll ParseRoll(string roll)
         {
             var mockPartialRoll = new Mock<PartialRoll>();
-            var value = 0;
 
-            if (int.TryParse(roll, out value))
+            if (int.TryParse(roll, out int value))
             {
                 mockPartialRoll.Setup(r => r.AsSum<int>()).Returns(value);
                 return mockPartialRoll.Object;
@@ -127,10 +131,12 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             Assert.That(characters.Select(c => c.InterestingTrait), Is.Unique);
         }
 
-        private Character BuildCharacter(int level, string className = "random class name", string metarace = "random metarace", string baseRace = "random base race")
+        private static Character BuildCharacter(int level, string className = "random class name", string metarace = "random metarace", string baseRace = "random base race")
         {
-            var character = new Character();
-            character.InterestingTrait = Guid.NewGuid().ToString();
+            var character = new Character
+            {
+                InterestingTrait = Guid.NewGuid().ToString()
+            };
             character.Class.Name = className;
             character.Class.Level = level;
             character.Race.Metarace = metarace;
@@ -263,7 +269,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         [Test]
         public void GenerateWithSetClassName()
         {
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(new[] { "class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(["class name"]);
 
             mockCharacterGenerator
                 .Setup(g => g.GenerateWith(
@@ -288,7 +294,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         [Test]
         public void GenerateWithSetClassNames()
         {
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(new[] { "class name", "other class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(["class name", "other class name"]);
 
             mockCharacterGenerator
                 .Setup(g => g.GenerateWith(
@@ -313,7 +319,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         [Test]
         public void GenerateWithRandomSetClassNames()
         {
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(new[] { "class name", "other class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(["class name", "other class name"]);
 
             var index = 0;
             mockCollectionSelector.Setup(s => s.SelectRandomFrom(It.IsAny<IEnumerable<string>>())).Returns((IEnumerable<string> c) => c.ElementAt(index++ % c.Count()));
@@ -352,7 +358,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         [Test]
         public void GenerateSetToAnyNPC()
         {
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(new[] { ClassNameRandomizerTypeConstants.AnyNPC });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns([ClassNameRandomizerTypeConstants.AnyNPC]);
 
             mockCharacterGenerator
                 .Setup(g => g.GenerateWith(
@@ -376,7 +382,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         [Test]
         public void GenerateWithEverything()
         {
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(new[] { "class name", "other class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(["class name", "other class name"]);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[0].Creature.Name)).Returns("13d37");
             mockEncounterFormatter.Setup(s => s.SelectBaseRaceFrom(creatures[0].Creature.Name)).Returns("base race");
             mockEncounterFormatter.Setup(s => s.SelectMetaraceFrom(creatures[0].Creature.Name)).Returns("metarace");
@@ -444,7 +450,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         [Test]
         public void GenerateWithNothingAfterEverything()
         {
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(new[] { "class name", "other class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(["class name", "other class name"]);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[0].Creature.Name)).Returns("13d37");
             mockEncounterFormatter.Setup(s => s.SelectBaseRaceFrom(creatures[0].Creature.Name)).Returns("base race");
             mockEncounterFormatter.Setup(s => s.SelectMetaraceFrom(creatures[0].Creature.Name)).Returns("metarace");
@@ -508,7 +514,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             Assert.That(characters.Select(c => c.Race.Metarace), Is.All.EqualTo("metarace"));
             Assert.That(characters.Select(c => c.Race.BaseRace), Is.All.EqualTo("base race"));
 
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns(Enumerable.Empty<string>());
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[0].Creature.Name)).Returns([]);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[0].Creature.Name)).Returns("1337");
             mockEncounterFormatter.Setup(s => s.SelectBaseRaceFrom(creatures[0].Creature.Name)).Returns(string.Empty);
             mockEncounterFormatter.Setup(s => s.SelectMetaraceFrom(creatures[0].Creature.Name)).Returns(string.Empty);
@@ -539,8 +545,10 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         public void GenerateCharactersFromSubtype()
         {
             creatures[0].Creature.Name = "other creature";
-            creatures[0].Creature.SubCreature = new Creature();
-            creatures[0].Creature.SubCreature.Name = "creature";
+            creatures[0].Creature.SubCreature = new Creature
+            {
+                Name = "creature"
+            };
 
             mockCharacterGenerator
                 .Setup(g => g.GenerateWith(
@@ -587,11 +595,11 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[1].Creature.Name)).Returns(CreatureDataConstants.Character);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[1].Creature.Name)).Returns("1337");
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[1].Creature.Name)).Returns(new[] { ClassNameRandomizerTypeConstants.AnyNPC });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[1].Creature.Name)).Returns([ClassNameRandomizerTypeConstants.AnyNPC]);
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[2].Creature.Name)).Returns(CreatureDataConstants.Character);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[2].Creature.Name)).Returns("1337");
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[2].Creature.Name)).Returns(new[] { "class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[2].Creature.Name)).Returns(["class name"]);
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[3].Creature.Name)).Returns(CreatureDataConstants.Character);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[3].Creature.Name)).Returns("1337");
@@ -603,7 +611,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[5].Creature.Name)).Returns(CreatureDataConstants.Character);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[5].Creature.Name)).Returns("1337");
-            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[5].Creature.Name)).Returns(new[] { "class name", "other class name" });
+            mockEncounterFormatter.Setup(s => s.SelectCharacterClassesFrom(creatures[5].Creature.Name)).Returns(["class name", "other class name"]);
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[6].Creature.Name)).Returns(CreatureDataConstants.Character);
             mockEncounterFormatter.Setup(s => s.SelectChallengeRatingFrom(creatures[6].Creature.Name)).Returns("13d37");

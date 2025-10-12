@@ -1,4 +1,4 @@
-﻿using DnDGen.CharacterGen.Generators.Characters;
+﻿using DnDGen.CharacterGen.Characters;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.Infrastructure.Generators;
 using DnDGen.RollGen;
