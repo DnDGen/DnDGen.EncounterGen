@@ -6,7 +6,7 @@
     <Company>DnDGen</Company>
     <Product>EncounterGen</Product>
     <Description>This generates encounters for the Dungeons and Dragons 3.5 system.  One can generate encounters of particular levels, times of day, and environments.  One can also filter creature types.  Treasure and equipment are generated.</Description>
-    <PackageReleaseNotes>Verify CI triggers</PackageReleaseNotes>
+    <PackageReleaseNotes>Update Character ability default rolls</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/DnDGen/EncounterGen</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DnDGen/EncounterGen</RepositoryUrl>
     <PackageTags>encounter npc character equipment treasure generator dice dungeons dragons d20 dnd 3.5 gen</PackageTags>
