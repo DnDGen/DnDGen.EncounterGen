@@ -1,6 +1,6 @@
 ﻿using DnDGen.CharacterGen.CharacterClasses;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.ClassNames;
 using DnDGen.CharacterGen.Races;
-using DnDGen.CharacterGen.Randomizers.CharacterClasses;
 using DnDGen.EncounterGen.Models;
 using DnDGen.EncounterGen.Selectors;
 using DnDGen.TreasureGen.Items;
