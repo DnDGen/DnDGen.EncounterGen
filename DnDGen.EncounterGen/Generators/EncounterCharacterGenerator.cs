@@ -1,9 +1,11 @@
-﻿using DnDGen.CharacterGen.Characters;
-using DnDGen.CharacterGen.Generators.Characters;
-using DnDGen.CharacterGen.Randomizers.Abilities;
-using DnDGen.CharacterGen.Randomizers.Alignments;
-using DnDGen.CharacterGen.Randomizers.CharacterClasses;
-using DnDGen.CharacterGen.Randomizers.Races;
+﻿using DnDGen.CharacterGen.Abilities.Randomizers;
+using DnDGen.CharacterGen.Alignments.Randomizers;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.ClassNames;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.Levels;
+using DnDGen.CharacterGen.Characters;
+using DnDGen.CharacterGen.Races.Randomizers;
+using DnDGen.CharacterGen.Races.Randomizers.BaseRaces;
+using DnDGen.CharacterGen.Races.Randomizers.Metaraces;
 using DnDGen.EncounterGen.Models;
 using DnDGen.EncounterGen.Selectors;
 using DnDGen.Infrastructure.Generators;
@@ -15,23 +17,13 @@ using System.Linq;
 
 namespace DnDGen.EncounterGen.Generators
 {
-    internal class EncounterCharacterGenerator : IEncounterCharacterGenerator
+    internal class EncounterCharacterGenerator(
+        ICollectionSelector collectionSelector,
+        Dice dice,
+        IEncounterFormatter encounterFormatter,
+        JustInTimeFactory justInTimeFactory,
+        ICharacterGenerator characterGenerator) : IEncounterCharacterGenerator
     {
-        private readonly ICollectionSelector collectionSelector;
-        private readonly Dice dice;
-        private readonly IEncounterFormatter encounterFormatter;
-        private readonly JustInTimeFactory justInTimeFactory;
-        private readonly ICharacterGenerator characterGenerator;
-
-        public EncounterCharacterGenerator(ICollectionSelector collectionSelector, Dice dice, IEncounterFormatter encounterFormatter, JustInTimeFactory justInTimeFactory, ICharacterGenerator characterGenerator)
-        {
-            this.collectionSelector = collectionSelector;
-            this.dice = dice;
-            this.encounterFormatter = encounterFormatter;
-            this.justInTimeFactory = justInTimeFactory;
-            this.characterGenerator = characterGenerator;
-        }
-
         public IEnumerable<Character> GenerateFrom(IEnumerable<EncounterCreature> creatures)
         {
             var characters = new List<Character>();
@@ -87,9 +79,9 @@ namespace DnDGen.EncounterGen.Generators
 
         private Character GenerateCharacter(int setLevel, string setBaseRace = "", string setMetarace = "", string setClass = "")
         {
-            var chosenClassNameRandomizer = justInTimeFactory.Build<IClassNameRandomizer>(ClassNameRandomizerTypeConstants.AnyPlayer);
-            var chosenBaseRaceRandomizer = justInTimeFactory.Build<RaceRandomizer>(RaceRandomizerTypeConstants.BaseRace.AnyBase);
-            var chosenMetaraceRandomizer = justInTimeFactory.Build<RaceRandomizer>(RaceRandomizerTypeConstants.Metarace.AnyMeta);
+            var chosenClassNameRandomizer = justInTimeFactory.Build<IClassNameRandomizer>(ClassNameRandomizerTypeConstants.Default);
+            var chosenBaseRaceRandomizer = justInTimeFactory.Build<RaceRandomizer>(RaceRandomizerTypeConstants.BaseRace.Default);
+            var chosenMetaraceRandomizer = justInTimeFactory.Build<RaceRandomizer>(RaceRandomizerTypeConstants.Metarace.Default);
 
             if (setClass == ClassNameRandomizerTypeConstants.AnyNPC)
             {
@@ -116,13 +108,19 @@ namespace DnDGen.EncounterGen.Generators
                 chosenMetaraceRandomizer = setMetaraceRandomizer;
             }
 
-            var alignmentRandomizer = justInTimeFactory.Build<IAlignmentRandomizer>(AlignmentRandomizerTypeConstants.Any);
-            var abilitiesRandomizer = justInTimeFactory.Build<IAbilitiesRandomizer>(AbilitiesRandomizerTypeConstants.Raw);
+            var alignmentRandomizer = justInTimeFactory.Build<IAlignmentRandomizer>(AlignmentRandomizerTypeConstants.Default);
+            var abilitiesRandomizer = justInTimeFactory.Build<IAbilitiesRandomizer>(AbilitiesRandomizerTypeConstants.Default);
             var setLevelRandomizer = justInTimeFactory.Build<ISetLevelRandomizer>();
 
             setLevelRandomizer.SetLevel = setLevel;
 
-            return characterGenerator.GenerateWith(alignmentRandomizer, chosenClassNameRandomizer, setLevelRandomizer, chosenBaseRaceRandomizer, chosenMetaraceRandomizer, abilitiesRandomizer);
+            return characterGenerator.GenerateWith(
+                alignmentRandomizer,
+                chosenClassNameRandomizer,
+                setLevelRandomizer,
+                chosenBaseRaceRandomizer,
+                chosenMetaraceRandomizer,
+                abilitiesRandomizer);
         }
 
         private string GetCharacterTemplate(Creature creature)

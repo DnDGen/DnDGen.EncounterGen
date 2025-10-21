@@ -1,10 +1,12 @@
-﻿using DnDGen.CharacterGen.Characters;
-using DnDGen.CharacterGen.Generators.Characters;
+﻿using DnDGen.CharacterGen.Abilities.Randomizers;
+using DnDGen.CharacterGen.Alignments.Randomizers;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.ClassNames;
+using DnDGen.CharacterGen.CharacterClasses.Randomizers.Levels;
+using DnDGen.CharacterGen.Characters;
 using DnDGen.CharacterGen.Races;
-using DnDGen.CharacterGen.Randomizers.Abilities;
-using DnDGen.CharacterGen.Randomizers.Alignments;
-using DnDGen.CharacterGen.Randomizers.CharacterClasses;
-using DnDGen.CharacterGen.Randomizers.Races;
+using DnDGen.CharacterGen.Races.Randomizers;
+using DnDGen.CharacterGen.Races.Randomizers.BaseRaces;
+using DnDGen.CharacterGen.Races.Randomizers.Metaraces;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.EncounterGen.Models;
 using DnDGen.EncounterGen.Tables;
@@ -1952,7 +1954,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures
                 abilitiesRandomizer);
         }
 
-        private string GetCharacterChallengeRating(double cr) => cr switch
+        private static string GetCharacterChallengeRating(double cr) => cr switch
         {
             0.5 => ChallengeRatingConstants.OneHalf,
             1 / 3d => ChallengeRatingConstants.OneThird,
