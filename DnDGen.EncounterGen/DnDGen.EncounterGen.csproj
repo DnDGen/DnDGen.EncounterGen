@@ -53,9 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DnDGen.CharacterGen" Version="16.0.0" />
-    <PackageReference Include="DnDGen.Infrastructure" Version="6.0.1" />
+    <PackageReference Include="DnDGen.Infrastructure" Version="7.0.1" />
     <PackageReference Include="DnDGen.RollGen" Version="16.0.3" />
-    <PackageReference Include="DnDGen.TreasureGen" Version="12.0.0" />
+    <PackageReference Include="DnDGen.TreasureGen" Version="12.0.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
