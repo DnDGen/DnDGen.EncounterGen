@@ -18,6 +18,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
             var creatures = new[]
             {
                 CreatureDataConstants.Aboleth,
+                CreatureDataConstants.Aboleth_Mage,
                 CreatureDataConstants.Athach,
                 CreatureDataConstants.Beholder,
                 CreatureDataConstants.CarrionCrawler,
@@ -51,6 +52,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
             var creatures = new[]
             {
                 CreatureDataConstants.Ape,
+                CreatureDataConstants.Ape_Dire,
                 CreatureDataConstants.Baboon,
                 CreatureDataConstants.Badger,
                 CreatureDataConstants.Bat,
@@ -106,7 +108,14 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
             var creatures = new[]
             {
                 CreatureDataConstants.Inevitable,
-                CreatureDataConstants.AnimatedObject,
+                //CreatureDataConstants.AnimatedObject,
+                CreatureDataConstants.AnimatedObject_Colossal,
+                CreatureDataConstants.AnimatedObject_Gargantuan,
+                CreatureDataConstants.AnimatedObject_Huge,
+                CreatureDataConstants.AnimatedObject_Large,
+                CreatureDataConstants.AnimatedObject_Medium,
+                CreatureDataConstants.AnimatedObject_Small,
+                CreatureDataConstants.AnimatedObject_Tiny,
                 CreatureDataConstants.Golem,
                 CreatureDataConstants.Homunculus,
                 CreatureDataConstants.Retriever,
@@ -199,7 +208,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
         {
             var creatures = new[]
             {
-                CreatureDataConstants.Aasimar,
+                CreatureDataConstants.Aasimar_Warrior,
                 CreatureDataConstants.Bugbear,
                 CreatureDataConstants.Character,
                 CreatureDataConstants.Drow,
@@ -335,9 +344,18 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
             var creatures = new[]
             {
                 CreatureDataConstants.Achaierai,
-                CreatureDataConstants.Angel,
-                CreatureDataConstants.Archon,
-                CreatureDataConstants.Arrowhawk,
+                //CreatureDataConstants.Angel,
+                CreatureDataConstants.AstralDeva,
+                CreatureDataConstants.Planetar,
+                CreatureDataConstants.Solar,
+                //CreatureDataConstants.Archon,
+                CreatureDataConstants.HoundArchon,
+                CreatureDataConstants.LanternArchon,
+                CreatureDataConstants.TrumpetArchon,
+                //CreatureDataConstants.Arrowhawk,
+                CreatureDataConstants.Arrowhawk_Adult,
+                CreatureDataConstants.Arrowhawk_Elder,
+                CreatureDataConstants.Arrowhawk_Juvenile,
                 CreatureDataConstants.Avoral,
                 CreatureDataConstants.Azer,
                 CreatureDataConstants.Barghest,
@@ -438,7 +456,10 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
         {
             var creatures = new[]
             {
-                CreatureDataConstants.Ant_Giant,
+                //CreatureDataConstants.Ant_Giant,
+                CreatureDataConstants.Ant_Giant_Queen,
+                CreatureDataConstants.Ant_Giant_Soldier,
+                CreatureDataConstants.Ant_Giant_Worker,
                 CreatureDataConstants.Bee_Giant,
                 CreatureDataConstants.BombardierBeetle_Giant,
                 CreatureDataConstants.Centipede_Monstrous,

@@ -4,7 +4,7 @@ using DnDGen.EncounterGen.Selectors;
 using DnDGen.EncounterGen.Selectors.Collections;
 using DnDGen.EncounterGen.Selectors.Selections;
 using DnDGen.EncounterGen.Tables;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Collections;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using DnDGen.TreasureGen.Coins;
