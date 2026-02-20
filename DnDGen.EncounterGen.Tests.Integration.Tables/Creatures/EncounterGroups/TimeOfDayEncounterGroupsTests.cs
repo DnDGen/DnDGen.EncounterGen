@@ -45,7 +45,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.EncounterGroups
             CreatureDataConstants.Shadow_Greater,
             CreatureDataConstants.ShadowMastiff,
             CreatureDataConstants.Spectre,
-            CreatureDataConstants.Vampire,
+            //CreatureDataConstants.Vampire,
             CreatureDataConstants.Vampire_Level1,
             CreatureDataConstants.Vampire_Level2,
             CreatureDataConstants.Vampire_Level3,

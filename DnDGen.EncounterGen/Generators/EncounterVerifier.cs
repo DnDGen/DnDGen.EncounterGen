@@ -67,7 +67,7 @@ namespace DnDGen.EncounterGen.Generators
 
             foreach (var filter in creatureTypeFilters)
             {
-                var filterCreatures = collectionSelector.Explode(Config.Name, TableNameConstants.CreatureGroups, filter);
+                var filterCreatures = collectionSelector.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, filter);
                 creatureNames.AddRange(filterCreatures);
             }
 

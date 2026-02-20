@@ -42,12 +42,12 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.EncounterGroups
                     encountersOfType.Add(encounter);
             }
 
-            AssertDistinctCollection(creatureType, encountersOfType.ToArray());
+            AssertDistinctCollection(creatureType, [.. encountersOfType]);
         }
 
         private IEnumerable<string> GetCreaturesOfTypeInEncounter(string creatureType, string encounter)
         {
-            var creaturesOfType = collectionSelector.Explode(Config.Name, TableNameConstants.CreatureGroups, creatureType);
+            var creaturesOfType = collectionSelector.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, creatureType);
             var encounterCreatures = collectionSelector.SelectFrom(Config.Name, TableNameConstants.EncounterCreatures, encounter);
             var creatures = encounterFormatter.SelectCreaturesAndAmountsFrom(encounterCreatures).Keys;
 

@@ -50,9 +50,9 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables
         protected IEnumerable<string> ExplodeCollection(string name)
         {
             if (collectionSelector.IsCollection(Config.Name, tableName, name))
-                return collectionSelector.Explode(Config.Name, tableName, name);
+                return collectionSelector.SelectFrom(Config.Name, tableName, name);
 
-            return new[] { name };
+            return [name];
         }
 
         protected IEnumerable<string> ExplodeCollections(IEnumerable<string> names)
@@ -108,7 +108,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables
             return allCreatures;
         }
 
-        protected void AssertCollection(IEnumerable<string> expected, IEnumerable<string> actual)
+        protected static void AssertCollection(IEnumerable<string> expected, IEnumerable<string> actual)
         {
             if (expected.Count() >= 300)
             {
@@ -121,12 +121,12 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables
             Assert.That(actual, Is.EquivalentTo(expected));
         }
 
-        protected void AssertOrderedCollection(IEnumerable<string> expected, IEnumerable<string> actual)
+        protected static void AssertOrderedCollection(IEnumerable<string> expected, IEnumerable<string> actual)
         {
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        protected void AssertContainedCollection(IEnumerable<string> contained, IEnumerable<string> container)
+        protected static void AssertContainedCollection(IEnumerable<string> contained, IEnumerable<string> container)
         {
             Assert.That(contained, Is.SubsetOf(container));
         }

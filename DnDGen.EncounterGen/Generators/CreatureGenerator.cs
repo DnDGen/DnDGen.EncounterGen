@@ -130,7 +130,7 @@ namespace DnDGen.EncounterGen.Generators
                 throw new InvalidOperationException($"Cannot generate random sub-creature of {sourceCreature.Name} without a set challenge rating");
 
             var name = encounterFormatter.SelectNameFrom(sourceCreature.Name);
-            var subcreatureNames = collectionSelector.Explode(Config.Name, TableNameConstants.CreatureGroups, name);
+            var subcreatureNames = collectionSelector.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, name);
 
             var challengeRatingCreatures = collectionSelector.SelectFrom(Config.Name, TableNameConstants.AverageChallengeRatings, setChallengeRating);
             var validSubcreatureNames = subcreatureNames.Intersect(challengeRatingCreatures);
