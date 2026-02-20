@@ -59,7 +59,6 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Albatross.Expression" Version="5.0.0" />
     <None Include="18531-twenty-sided-dice-vector-thumb.png" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>

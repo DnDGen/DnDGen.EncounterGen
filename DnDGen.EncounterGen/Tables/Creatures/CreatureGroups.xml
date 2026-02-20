@@ -4,6 +4,19 @@
   <collection>
     <name></name>
   </collection>
+	<collection>
+		<name>Mephit</name>
+		<entry>Mephit(Air)</entry>
+		<entry>Mephit(Dust)</entry>
+		<entry>Mephit(Earth)</entry>
+		<entry>Mephit(Fire)</entry>
+		<entry>Mephit(Ice)</entry>
+		<entry>Mephit(Magma)</entry>
+		<entry>Mephit(Ooze)</entry>
+		<entry>Mephit(Salt)</entry>
+		<entry>Mephit(Steam)</entry>
+		<entry>Mephit(Water)</entry>
+	</collection>
   <collection>
     <name>Aberration</name>
 	  <entry>Aboleth</entry>

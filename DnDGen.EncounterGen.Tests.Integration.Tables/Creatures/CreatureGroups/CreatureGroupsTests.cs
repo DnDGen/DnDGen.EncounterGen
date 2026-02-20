@@ -49,6 +49,17 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
             CreatureDataConstants.DominatedCreature_CR14,
             CreatureDataConstants.DominatedCreature_CR15,
             CreatureDataConstants.DominatedCreature_CR16)]
+        [TestCase(CreatureDataConstants.Mephit,
+            CreatureDataConstants.Mephit_Air,
+            CreatureDataConstants.Mephit_Dust,
+            CreatureDataConstants.Mephit_Earth,
+            CreatureDataConstants.Mephit_Fire,
+            CreatureDataConstants.Mephit_Ice,
+            CreatureDataConstants.Mephit_Magma,
+            CreatureDataConstants.Mephit_Ooze,
+            CreatureDataConstants.Mephit_Salt,
+            CreatureDataConstants.Mephit_Steam,
+            CreatureDataConstants.Mephit_Water)]
         public void CreatureGroup(string entry, params string[] items)
         {
             AssertDistinctCollection(entry, items);

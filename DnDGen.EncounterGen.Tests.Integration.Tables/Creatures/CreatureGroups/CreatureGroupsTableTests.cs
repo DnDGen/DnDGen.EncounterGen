@@ -17,6 +17,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.CreatureGroups
                 string.Empty,
                 CreatureDataConstants.Character,
                 CreatureDataConstants.DominatedCreature,
+                CreatureDataConstants.Mephit,
                 CreatureDataConstants.Types.Aberration,
                 CreatureDataConstants.Types.Animal,
                 CreatureDataConstants.Types.Construct,
