@@ -11,7 +11,6 @@ namespace DnDGen.EncounterGen.Tests.Integration
     public abstract class IntegrationTests
     {
         protected IKernel kernel;
-        protected const double encounterLevelDivisor = 50;
 
         [OneTimeSetUp]
         public void IntegrationTestsFixtureSetup()
@@ -22,27 +21,19 @@ namespace DnDGen.EncounterGen.Tests.Integration
             encounterGenLoader.LoadModules(kernel);
         }
 
-        [SetUp]
-        public void IntegrationTestsSetup()
-        {
-            kernel.Inject(this);
-        }
-
         protected T GetNewInstanceOf<T>()
         {
             return kernel.Get<T>();
         }
 
-        protected double GetTimeLimitInSeconds(Encounter encounter)
-        {
-            //INFO: Since the limit in CharacterGen is 1 second per character, we will use that summation as our limit as well
-            //Sometimes even a low-level character can take a while to generate, so we buffer in an extra second
-            var limit = encounter.Characters.Count() + 1;
-
-            //INFO: Higher-level encounters may take longer to generate (even for non-characters) due to increased treasure amounts
-            var delta = Math.Max(0.1, encounter.ActualEncounterLevel / encounterLevelDivisor);
-
-            return limit + delta;
-        }
+        /// <summary>
+        /// As a base limit, we want general encounters to generate in less than a second
+        /// Each character can take up to 1 second to generate, so we will uadd that to our limit
+        /// Furthermore, high-level encounters may take longer to generate due to increased treasure amounts,
+        /// so we will add an additional buffer based on the encounter level
+        /// </summary>
+        /// <param name="encounter"></param>
+        /// <returns></returns>
+        protected static double GetTimeLimitInSeconds(Encounter encounter) => encounter.Characters.Count() + Math.Ceiling(encounter.ActualEncounterLevel / 10d);
     }
 }
