@@ -1415,7 +1415,6 @@
         public const string Locathah_Warrior = "Character[1]{Locathah}@Warrior@";
         public const string Locust = "Locust";
         public const string Locust_Swarm = "Locust swarm";
-        public const string Lycanthrope = "Lycanthrope";
         public const string Magmin = "Magmin";
         public const string MantaRay = "Manta ray";
         public const string Manticore = "Manticore";

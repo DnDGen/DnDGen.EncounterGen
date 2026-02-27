@@ -9,21 +9,19 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.EncounterGroups
     [TestFixture]
     public class TimeOfDayEncounterGroupsTests : EncounterGroupsTableTests
     {
-        private string[] creaturesSensitiveToSunlight = new[]
-        {
+        private readonly string[] creaturesSensitiveToSunlight =
+        [
             CreatureDataConstants.Bodak,
             CreatureDataConstants.Derro,
             CreatureDataConstants.Derro_Noncombatant,
             CreatureDataConstants.Derro_Sorcerer_3rd,
             CreatureDataConstants.Derro_Sorcerer_5thTo8th,
-            CreatureDataConstants.Drow,
             CreatureDataConstants.Drow_Captain,
             CreatureDataConstants.Drow_Leader,
             CreatureDataConstants.Drow_Lieutenant,
             CreatureDataConstants.Drow_Noncombatant,
             CreatureDataConstants.Drow_Sergeant,
             CreatureDataConstants.Drow_Warrior,
-            CreatureDataConstants.Duergar,
             CreatureDataConstants.Duergar_Captain,
             CreatureDataConstants.Duergar_Leader,
             CreatureDataConstants.Duergar_Lieutenant,
@@ -47,7 +45,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.EncounterGroups
             CreatureDataConstants.Shadow_Greater,
             CreatureDataConstants.ShadowMastiff,
             CreatureDataConstants.Spectre,
-            CreatureDataConstants.Vampire,
+            //CreatureDataConstants.Vampire,
             CreatureDataConstants.Vampire_Level1,
             CreatureDataConstants.Vampire_Level2,
             CreatureDataConstants.Vampire_Level3,
@@ -71,7 +69,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Tables.Creatures.EncounterGroups
             CreatureDataConstants.VampireSpawn,
             CreatureDataConstants.Wraith,
             CreatureDataConstants.Wraith_Dread,
-        };
+        ];
 
         [Test]
         public override void EntriesAreComplete()

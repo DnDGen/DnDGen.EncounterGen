@@ -18,7 +18,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Stress
         [SetUp]
         public void Setup()
         {
-            testedFilters = new HashSet<string>();
+            testedFilters = [];
             encounterGenerator = GetNewInstanceOf<IEncounterGenerator>();
             stopwatch = new Stopwatch();
         }
@@ -121,9 +121,9 @@ namespace DnDGen.EncounterGen.Tests.Integration.Stress
                 (EnvironmentConstants.Desert, EnvironmentConstants.Temperatures.Warm, EnvironmentConstants.TimesOfDay.Day, 1),
             };
 
-            var problemEnvironment = collectionSelector.SelectRandomFrom(problemEnvironments);
+            var (environment, temperature, time, level) = collectionSelector.SelectRandomFrom(problemEnvironments);
 
-            AssertEncounterInRandomEnvironment(problemEnvironment.Env, problemEnvironment.Temp, problemEnvironment.Time, problemEnvironment.Level);
+            AssertEncounterInRandomEnvironment(environment, temperature, time, level);
         }
 
         [Test]
