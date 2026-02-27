@@ -1,6 +1,6 @@
 ﻿using DnDGen.CharacterGen.Characters;
 using DnDGen.EncounterGen.Generators;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.RollGen;
 using DnDGen.TreasureGen.Coins;
 using DnDGen.TreasureGen.Generators;

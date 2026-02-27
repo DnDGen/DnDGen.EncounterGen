@@ -38,9 +38,9 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
                 mockEncounterFormatter.Object,
                 mockChallengeRatingSelector.Object);
 
-            creaturesAndAmounts = new Dictionary<string, string>();
-            requiresSubcreature = new List<string>();
-            challengeRatings = new Dictionary<string, List<string>>();
+            creaturesAndAmounts = [];
+            requiresSubcreature = [];
+            challengeRatings = [];
 
             creaturesAndAmounts["creature"] = "creature amount";
             AddChallengeRating("creature", "challenge rating");
@@ -62,10 +62,10 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
 
         private void AddChallengeRating(string creature, string cr)
         {
-            challengeRatings[creature] = new List<String> { cr };
+            challengeRatings[creature] = [cr];
 
             if (!challengeRatings.ContainsKey(cr))
-                challengeRatings[cr] = new List<string>();
+                challengeRatings[cr] = [];
 
             challengeRatings[cr].Add(creature);
         }
@@ -73,9 +73,8 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
         private PartialRoll ParseRoll(string roll)
         {
             var mockPartialRoll = new Mock<PartialRoll>();
-            var value = 0;
 
-            if (int.TryParse(roll, out value))
+            if (int.TryParse(roll, out var value))
             {
                 mockPartialRoll.Setup(r => r.AsSum<int>()).Returns(value);
                 return mockPartialRoll.Object;
@@ -84,15 +83,12 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             throw new ArgumentException("This roll was not set up to be parsed: " + roll);
         }
 
-        private int GetIndex(int count)
+        private static int GetIndex(int count) => (count % 6) switch
         {
-            return (count % 6) switch
-            {
-                0 or 2 or 3 => 0,
-                1 or 4 or 5 => 1,
-                _ => 0,
-            };
-        }
+            0 or 2 or 3 => 0,
+            1 or 4 or 5 => 1,
+            _ => 0,
+        };
 
         [Test]
         public void GenerateForEncounter_GenerateCreatures()
@@ -219,7 +215,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             requiresSubcreature.Add("creature");
 
             var subcreatures = new[] { "wrong creature", "other creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
 
             mockCollectionSelector.SetupSequence(s => s.SelectRandomFrom(subcreatures)).Returns(subcreatures.First()).Returns(subcreatures.Last());
 
@@ -254,7 +250,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             requiresSubcreature.Add("creature");
 
             var subcreatures = new[] { "other creature", "random creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
 
             var count = 0;
             mockCollectionSelector.Setup(s => s.SelectRandomFrom(subcreatures)).Returns((IEnumerable<string> c) => c.ElementAt(GetIndex(count++)));
@@ -296,7 +292,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             requiresSubcreature.Add("creature");
 
             var subcreatures = new[] { "wrong creature", "other creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
 
             mockCollectionSelector.SetupSequence(s => s.SelectRandomFrom(subcreatures)).Returns(subcreatures.First()).Returns(subcreatures.Last());
 
@@ -325,7 +321,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             requiresSubcreature.Add("creature");
 
             var subcreatures = new[] { "wrong creature", "other creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subcreatures);
 
             mockCollectionSelector.SetupSequence(s => s.SelectRandomFrom(subcreatures)).Returns(subcreatures.First()).Returns(subcreatures.Last());
 
@@ -365,8 +361,8 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             requiresSubcreature.Add("other creature");
 
             var subSubcreatures = new[] { "wrong sub-creature", "sub-creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "other creature")).Returns(subSubcreatures);
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(new[] { "wrong creature", "other creature" });
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "other creature")).Returns(subSubcreatures);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(["wrong creature", "other creature"]);
 
             mockCollectionSelector.SetupSequence(s => s.SelectRandomFrom(subSubcreatures)).Returns(subSubcreatures.First()).Returns(subSubcreatures.Last());
 
@@ -407,10 +403,10 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             requiresSubcreature.Add("other creature");
 
             var subtypes = new[] { "wrong creature", "random creature", "other creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subtypes);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(subtypes);
 
             var subSubtypes = new[] { "wrong sub-creature", "other sub-creature", "sub-creature" };
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "other creature")).Returns(subSubtypes);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "other creature")).Returns(subSubtypes);
 
             var count = 0;
             mockCollectionSelector.Setup(s => s.SelectRandomFrom(It.IsAny<IEnumerable<string>>())).Returns((IEnumerable<string> c) => c.ElementAt(GetIndex(count++)));
@@ -465,7 +461,7 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             mockEncounterFormatter.Setup(s => s.SelectDescriptionFrom("sub-creature")).Returns("sub-creature description");
 
             requiresSubcreature.Add("creature");
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(new[] { "wrong sub-creature" });
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature")).Returns(["wrong sub-creature"]);
 
             AddChallengeRating("wrong sub-creature", "creature challenge rating");
 
@@ -507,8 +503,8 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
 
             requiresSubcreature.Add(creaturesAndAmounts.First().Key);
             requiresSubcreature.Add("sub-creature");
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "creature name")).Returns(new[] { "sub-creature" });
-            mockCollectionSelector.Setup(s => s.Explode(Config.Name, TableNameConstants.CreatureGroups, "sub-creature name")).Returns(new[] { "further sub-creature" });
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "creature name")).Returns(["sub-creature"]);
+            mockCollectionSelector.Setup(s => s.SelectFrom(Config.Name, TableNameConstants.CreatureGroups, "sub-creature name")).Returns(["further sub-creature"]);
 
             AddChallengeRating("sub-creature", "creature challenge rating");
             AddChallengeRating("further sub-creature", "sub-creature challenge rating");
@@ -615,8 +611,10 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             };
 
             creatures[0].Creature.Name = "creature";
-            creatures[0].Creature.SubCreature = new Creature();
-            creatures[0].Creature.SubCreature.Name = "sub-creature";
+            creatures[0].Creature.SubCreature = new Creature
+            {
+                Name = "sub-creature"
+            };
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[0].Creature.Name)).Returns("creature name");
             mockEncounterFormatter.Setup(s => s.SelectDescriptionFrom(creatures[0].Creature.Name)).Returns("creature description");
@@ -675,8 +673,10 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             };
 
             creatures[0].Creature.Name = "creature";
-            creatures[0].Creature.SubCreature = new Creature();
-            creatures[0].Creature.SubCreature.Name = "existing sub-creature";
+            creatures[0].Creature.SubCreature = new Creature
+            {
+                Name = "existing sub-creature"
+            };
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[0].Creature.Name)).Returns("creature name");
             mockEncounterFormatter.Setup(s => s.SelectDescriptionFrom(creatures[0].Creature.Name)).Returns("creature description");
@@ -708,9 +708,11 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             };
 
             creatures[0].Creature.Name = "creature";
-            creatures[0].Creature.SubCreature = new Creature();
-            creatures[0].Creature.SubCreature.Name = "sub-creature";
-            creatures[0].Creature.SubCreature.SubCreature = new Creature();
+            creatures[0].Creature.SubCreature = new Creature
+            {
+                Name = "sub-creature",
+                SubCreature = new Creature()
+            };
             creatures[0].Creature.SubCreature.SubCreature.Name = "further sub-creature";
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[0].Creature.Name)).Returns("creature name");
@@ -746,8 +748,10 @@ namespace DnDGen.EncounterGen.Tests.Unit.Generators
             };
 
             creatures[0].Creature.Name = "creature";
-            creatures[0].Creature.SubCreature = new Creature();
-            creatures[0].Creature.SubCreature.Name = "sub-creature";
+            creatures[0].Creature.SubCreature = new Creature
+            {
+                Name = "sub-creature"
+            };
 
             mockEncounterFormatter.Setup(s => s.SelectNameFrom(creatures[0].Creature.Name)).Returns("creature name");
             mockEncounterFormatter.Setup(s => s.SelectDescriptionFrom(creatures[0].Creature.Name)).Returns("creature description");
