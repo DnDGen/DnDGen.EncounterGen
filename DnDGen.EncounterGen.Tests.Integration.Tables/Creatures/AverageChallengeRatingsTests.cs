@@ -10,7 +10,7 @@ using DnDGen.CharacterGen.Races.Randomizers.Metaraces;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.EncounterGen.Models;
 using DnDGen.EncounterGen.Tables;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.RollGen;
 using NUnit.Framework;
 using System;

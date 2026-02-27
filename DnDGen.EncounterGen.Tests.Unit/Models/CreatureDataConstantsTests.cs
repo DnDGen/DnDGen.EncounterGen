@@ -233,7 +233,6 @@ namespace DnDGen.EncounterGen.Tests.Unit.Models
         [TestCase(CreatureDataConstants.Locathah, "Locathah")]
         [TestCase(CreatureDataConstants.Locust, "Locust")]
         [TestCase(CreatureDataConstants.Locust_Swarm, "Locust swarm")]
-        [TestCase(CreatureDataConstants.Lycanthrope, "Lycanthrope")]
         [TestCase(CreatureDataConstants.Magmin, "Magmin")]
         [TestCase(CreatureDataConstants.MantaRay, "Manta ray")]
         [TestCase(CreatureDataConstants.Manticore, "Manticore")]

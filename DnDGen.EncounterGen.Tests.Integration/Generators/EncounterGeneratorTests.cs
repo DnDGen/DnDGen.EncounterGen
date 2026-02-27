@@ -351,6 +351,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Generators
         [TestCase(CreatureDataConstants.Types.MonstrousHumanoid, EnvironmentConstants.Mountain, 10)]
         [TestCase(CreatureDataConstants.Types.Ooze, EnvironmentConstants.Underground, 7)]
         [TestCase(CreatureDataConstants.Types.Outsider)]
+        [TestCase(CreatureDataConstants.Types.Outsider, EnvironmentConstants.Plains, 3)]
         [TestCase(CreatureDataConstants.Types.Plant)]
         [TestCase(CreatureDataConstants.Types.Undead)]
         [TestCase(CreatureDataConstants.Types.Vermin)]
@@ -364,7 +365,7 @@ namespace DnDGen.EncounterGen.Tests.Integration.Generators
                 Level = level,
                 AllowAquatic = true,
                 AllowUnderground = true,
-                CreatureTypeFilters = new[] { filter },
+                CreatureTypeFilters = [filter],
             };
 
             stopwatch.Start();
@@ -375,6 +376,25 @@ namespace DnDGen.EncounterGen.Tests.Integration.Generators
 
             var timeLimit = GetTimeLimitInSeconds(encounter);
             Assert.That(stopwatch.Elapsed.TotalSeconds, Is.LessThan(timeLimit), encounter.Description);
+        }
+
+        [Test]
+        [Repeat(100)]
+        public void BUG_Generate_ReturnsEncounter_WithMephits()
+        {
+            var specifications = new EncounterSpecifications
+            {
+                Environment = EnvironmentConstants.Plains,
+                Temperature = EnvironmentConstants.Temperatures.Temperate,
+                TimeOfDay = EnvironmentConstants.TimesOfDay.Night,
+                Level = 3,
+                AllowAquatic = false,
+                AllowUnderground = false,
+                CreatureTypeFilters = [CreatureDataConstants.Types.Outsider],
+            };
+
+            var encounter = encounterGenerator.Generate(specifications);
+            AssertEncounter(encounter);
         }
 
         private void AssertEncounter(Encounter encounter)

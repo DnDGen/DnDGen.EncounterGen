@@ -8,7 +8,7 @@ using DnDGen.CharacterGen.Races.Randomizers.BaseRaces;
 using DnDGen.CharacterGen.Races.Randomizers.Metaraces;
 using DnDGen.EncounterGen.Models;
 using DnDGen.EncounterGen.Selectors;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Collections;
 using DnDGen.RollGen;
 using System;
